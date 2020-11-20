@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>图标替换</title>
+    <style>
+        .size128 {
+            width: 128px;
+            height: 128px;
+        }
+
+        .no_replacement {
+            font-size: 70px;
+        }
+
+        .radio_iteam:not(:disabled):not(.disabled).active,
+        .radio_iteam:not(:disabled):not(.disabled):active,
+        .show>.radio_iteam.dropdown-toggle {
+            color: #222 !important;
+            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+            background-color: #EEE !important;
+            border-color: #333 !important;
+        }
+
+        .radio_iteam a {
+            color: rgb(25, 202, 158);
+        }
+    </style>
+    <script>
+        (function () {
+            //Remove QQ/TIM URL suffix
+            var patt = new RegExp(/(.+)[\?\&]tdsourcetag\=\w+$/);
+            var arr = patt.exec(window.location.href);
+            if (arr != null) { window.location.href = arr[1]; }
+            if (window.matchMedia('(prefers-color-scheme: dark)').media === 'not all') {
+                document.documentElement.style.display = 'none';
+                document.head.insertAdjacentHTML(
+                    'beforeend',
+                    '<link rel="stylesheet" href="/light.css" onload="document.documentElement.style.display = \'\'">'
+                );
+            }
+            //If at night, load night CSS
+            var hours = new Date().getHours();
+            var css = document.createElement("link");
+            css.setAttribute("rel", "stylesheet");
+            css.setAttribute("href",
+                0 ?//(hours < 6 && hours > 20) || (!!window.matchMedia && (window.matchMedia("(prefers-color-scheme: dark)").matches)) ?
+                    "https://cdn.jsdelivr.net/npm/bootswatch@4.5.3/dist/darkly/bootstrap.min.css" :
+                    'https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css');
+            document.head.appendChild(css);
+        })()
+    </script>
+</head>
+
+<body>
+    <div class="jumbotron jumbotron-fluid py-3">
+        <div class="container">
+            <h1 id="jumbotron_title" class="display-4">替换macOS图标的脚本</h1>
+            <p id="jumbotron_text" class="lead">
+                Generate shell script to replace macOS icons.<br />
+                Old icons in ~/Download/icon/<br />
+                <a href="https://github.com/lietxia/macicon">Github Code</a>
+            </p>
+        </div>
+    </div>
+    <div class="container text-center">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            复制以下代码到<kbd>终端(Terminal.app)</kbd>，粘贴并执行。<br />Copy the following code into
+            <kbd>Terminal.app</kbd>, paste and run it.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="form-group">
+            <textarea class="form-control shadow" id="code_textarea" rows="4" onclick="this.select();"></textarea>
+        </div>
+        <div class="btn-group mb-3 rounded shadow" role="group">
+            <button type="button" class="btn btn-secondary" onclick="select_all(false)">不换图标 No replacement</button>
+            <button type="button" class="btn btn-warning" onclick="select_all('style_current')">当前图标 Current</button>
+            <button type="button" class="btn btn-primary" onclick="select_all('style_origin')">原始图标 Origin</button>
+            <button type="button" class="btn btn-success" onclick="select_all('style_rounded_corners')">圆角图标 Rounded
+                corners</button>
+        </div>
+    </div>
+    <script type="text/html" id="templ1">
+    {{~it :value:idx}} {{ window.current_status[idx]=0; }}
+    <div class="btn-group btn-group-toggle m-2 shadow-lg rounded" data-toggle="buttons">
+            <label class="radio_iteam btn btn-secondary active">
+                <input type="radio" name="{{=idx}}" value="0" checked>
+                {{=value.app_name}}<br />
+                <span class="no_replacement">🚫</span>
+                <br />No replacement<br />不换图标
+            </label>
+            {{ for(var i=0;i< value.style.length;i++){ }}
+            <label class="radio_iteam btn btn-secondary">
+                <input type="radio" name="{{=idx}}" value="{{=i+1}}"> 
+                <img class="size128" src="{{=value.style[i].image}}" />
+                <br />{{=value.style[i].name}}<br /><a href="{{=value.style[i].link}}">{{=value.style[i].author}}</a>
+            </label>
+            {{ } }}
+        </div>
+    {{~}}
+</script>
+    <!--content-->
+    <div class="container-fluid text-center" id="content_div"></div>
+
+    <!--javaScript-->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dot@1.1.3/doT.min.js" crossorigin="anonymous"></script>
+    <script>
+        window.current_status = [];
+        window.icon_data = [
+            {
+                "app_name": "Microsoft Edge",
+                "style_origin": 0,
+                "style_rounded_corners": 1,
+                "style_current": 1,
+                "icon_path": "/Applications/Microsoft Edge.app/Contents/Resources/app.icns",
+                "style": [
+                    {
+                        "name": "Microsoft Edge Alt",
+                        "icns": "https://github.com/elrumo/macOS_Big_Sur_icons_replacements/raw/master/icons/Microsoft_Edge_Alt.icns",
+                        "image": "https://firebasestorage.googleapis.com/v0/b/macos-icons.appspot.com/o/icons_approved%2Fpng%2FMicrosoft_Edge_Alt.png?alt=media&token=a4a18fc6-24f3-4690-9e94-4f364931b665",
+                        "author": "Name1",
+                        "link": "#"
+                    },
+                    {
+                        "name": "Microsoft Edge",
+                        "icns": "#",
+                        "image": "https://storage.googleapis.com/download/storage/v1/b/macos-icons.appspot.com/o/icons_approved%2Fpng%2F1605520759105_Edge.png?generation=1605532105829382&alt=media",
+                        "author": "Name2",
+                        "link": "#"
+                    }
+                ]
+            },
+            {
+                "app_name": "Google Chrome",
+                "style_origin": 0,
+                "style_rounded_corners": 1,
+                "style_current": 1,
+                "icon_path": "/Applications/Google Chrome.app/Contents/Resources/app.icns",
+                "style": [
+                    {
+                        "name": "Chrome1",
+                        "icns": "https://firebasestorage.googleapis.com/v0/b/macos-icons.appspot.com/o/icons_approved%2FGoogle_Chrome_Alt.icns?alt=media&token=a147f3bf-85cd-45d4-a92d-e4ef3897758e",
+                        "image": "https://firebasestorage.googleapis.com/v0/b/macos-icons.appspot.com/o/icons_approved%2Fpng%2FGoogle_Chrome_Alt.png?alt=media&token=16e3adaf-f3eb-4d8c-aca9-6ba01eb90759",
+                        "author": "Name1",
+                        "link": "#"
+                    },
+                    {
+                        "name": "chrome2",
+                        "icns": "https://storage.googleapis.com/download/storage/v1/b/macos-icons.appspot.com/o/icons_approved%2F1605314281148_Google%20Chrome.icns?generation=1605484556231732&alt=media",
+                        "image": "https://storage.googleapis.com/download/storage/v1/b/macos-icons.appspot.com/o/icons_approved%2Fpng%2F1605314281148_Google%20Chrome.png?generation=1605484556164163&alt=media",
+                        "author": "Name2",
+                        "link": "#"
+                    }
+                ]
+            }
+        ]
+        var templ = doT.template(document.getElementById("templ1").text);
+        document.getElementById("content_div").innerHTML = templ(window.icon_data);
+        //$.getJSON("icon_data.json", function (json) {$("#content_div").innerHTML = templ(json);});
+
+        function select_all(params) {
+
+            if (params === false) {
+                window.current_status = window.current_status.fill(0);
+                gen_code(0, 0);
+            }
+        }
+        function gen_code(key, value) {
+            window.current_status[key] = parseInt(value);
+            var url = [], path = [], count = 0;
+            for (let index = 0; index < window.icon_data.length; index++) {
+                var style_val = window.current_status[index];
+                if (style_val > 0) {
+                    count++;
+                    path.push(window.icon_data[index].icon_path);
+                    url.push(window.icon_data[index].style[style_val - 1].icns);
+                }
+            }
+            document.getElementById("code_textarea").value =
+                (count === 0) ? ""
+                    : `ICON_URL=("${url.join('" "')}") \\
+ICON_PATH=("${path.join('" "')}") \\
+mkdir -p ~/Downloads/icon/ \\
+WORK_DIR=$(cd ~/Downloads/icon/ && pwd) \\
+LENGTH=\${#ICON_URL[@]} \\
+for ((i = 0; i < LENGTH; i++)); do \\
+if [ -f "\${ICON_PATH[i]}" ]; then \\
+APP_PATH = $(echo "\${ICON_PATH[i]}" | sed 's,\\.app\\/.*$,,g') \\
+APP_NAME = $(echo "\${APP_PATH}" | sed 's,^.*/,,g') \\
+mkdir - p "\${WORK_DIR}/\${APP_NAME}" \\
+curl - sSL "\${ICON_URL}" - o "\${WORK_DIR}/$\{APP_NAME}/new.icns" \\
+cp "\${ICON_PATH[i]}" "\${WORK_DIR}/\${APP_NAME}/old.icns" \\
+cp "\${WORK_DIR}/\${APP_NAME}/new.icns" "\${ICON_PATH[i]}" && touch "\${APP_PATH}.app" \\
+fi \\
+done`;
+        }
+        $(document).ready(function () {
+            $('input[type=radio]').change(function (that) { gen_code(that.target.name, that.target.value) });
+        });
+    </script>
+</body>
+
+
+</html>

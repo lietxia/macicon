@@ -1,0 +1,48 @@
+[
+    {
+        "app_name": "Microsoft Edge",
+        "style_origin": 0,
+        "style_rounded_corners": 1,
+        "style_current": 1,
+        "icon_path": "/Applications/Microsoft Edge.app/Contents/Resources/app.icns",
+        "style": [
+            {
+                "name": "Microsoft Edge Alt",
+                "icns": "https://github.com/elrumo/macOS_Big_Sur_icons_replacements/raw/master/icons/Microsoft_Edge_Alt.icns",
+                "image": "https://firebasestorage.googleapis.com/v0/b/macos-icons.appspot.com/o/icons_approved%2Fpng%2FMicrosoft_Edge_Alt.png?alt=media&token=a4a18fc6-24f3-4690-9e94-4f364931b665",
+                "author": "Name1",
+                "link": "#"
+            },
+            {
+                "name": "Microsoft Edge",
+                "icns": "#",
+                "image": "https://storage.googleapis.com/download/storage/v1/b/macos-icons.appspot.com/o/icons_approved%2Fpng%2F1605520759105_Edge.png?generation=1605532105829382&alt=media",
+                "author": "Name2",
+                "link": "#"
+            }
+        ]
+    },
+    {
+        "app_name": "Google Chrome",
+        "style_origin": 0,
+        "style_rounded_corners": 1,
+        "style_current": 1,
+        "icon_path": "/Applications/Google Chrome.app/Contents/Resources/app.icns",
+        "style": [
+            {
+                "name": "Chrome1",
+                "icns": "https://firebasestorage.googleapis.com/v0/b/macos-icons.appspot.com/o/icons_approved%2FGoogle_Chrome_Alt.icns?alt=media&token=a147f3bf-85cd-45d4-a92d-e4ef3897758e",
+                "image": "https://firebasestorage.googleapis.com/v0/b/macos-icons.appspot.com/o/icons_approved%2Fpng%2FGoogle_Chrome_Alt.png?alt=media&token=16e3adaf-f3eb-4d8c-aca9-6ba01eb90759",
+                "author": "Name1",
+                "link": "#"
+            },
+            {
+                "name": "chrome2",
+                "icns": "https://storage.googleapis.com/download/storage/v1/b/macos-icons.appspot.com/o/icons_approved%2F1605314281148_Google%20Chrome.icns?generation=1605484556231732&alt=media",
+                "image": "https://storage.googleapis.com/download/storage/v1/b/macos-icons.appspot.com/o/icons_approved%2Fpng%2F1605314281148_Google%20Chrome.png?generation=1605484556164163&alt=media",
+                "author": "Name2",
+                "link": "#"
+            }
+        ]
+    }
+]
